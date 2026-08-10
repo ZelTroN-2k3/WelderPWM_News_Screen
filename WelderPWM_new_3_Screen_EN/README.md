@@ -8,6 +8,10 @@
 > **High-performance modular C++ firmware for 3D filament welding and recycling machines.**  
 > Intelligent closed-loop thermal regulation with **NTC 100k** sensor, real-time graphical animated **128x64 OLED HUD**, **EEPROM** parameter storage, active thermal runaway protections, and ergonomic **single-button** navigation.
 
+<p align="center">
+  <img src="News%20Model%20STL.png" alt="3D Welder CAD Model" width="700">
+</p>
+
 ---
 
 ## 👥 Authors & Credits
