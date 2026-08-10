@@ -8,6 +8,10 @@
 > **Firmware modulaire C++ haute performance pour soudeuse/recycleuse de filament 3D.**  
 > Régulation thermique intelligente en boucle fermée par sonde **CTN 100k**, écran **OLED 128x64** avec animations graphiques temps réel, mémorisation **EEPROM**, sécurités thermiques actives et contrôle ergonomique par **bouton unique**.
 
+<p align="center">
+  <img src="News%20Model%20STL.png" alt="Modélisation 3D Soudeuse" width="700">
+</p>
+
 ---
 
 ## 👥 Auteurs & Crédits
