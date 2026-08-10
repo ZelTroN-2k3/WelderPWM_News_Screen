@@ -1,203 +1,207 @@
-# 🔥 Automated 3D Filament Welder (PWM & NTC Thermoregulation)
+# 🔥 Soudeuse de Filament 3D Automatisée (PWM & Régulation CTN)
 
 [![Arduino](https://img.shields.io/badge/Platform-Arduino%20Nano%20V3-blue.svg)](https://www.arduino.cc/)
 [![Firmware](https://img.shields.io/badge/Version-v3.8%20Alpha-brightgreen.svg)]()
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%20%2F%20Arduino-orange.svg)]()
 [![License](https://img.shields.io/badge/License-Open%20Source-green.svg)]()
 
-> **High-performance modular C++ firmware for 3D filament welding and recycling machines.**  
-> Intelligent closed-loop thermal regulation with **NTC 100k** sensor, real-time graphical animated **128x64 OLED HUD**, **EEPROM** parameter storage, active thermal runaway protections, and ergonomic **single-button** navigation.
+> **Firmware modulaire C++ haute performance pour soudeuse/recycleuse de filament 3D.**  
+> Régulation thermique intelligente en boucle fermée par sonde **CTN 100k**, écran **OLED 128x64** avec animations graphiques temps réel, mémorisation **EEPROM**, sécurités thermiques actives et contrôle ergonomique par **bouton unique**.
+
+<p align="center">
+  <img src="News%20Model%20STL.png" alt="Modélisation 3D Soudeuse" width="700">
+</p>
 
 ---
 
-## 👥 Authors & Credits
-* **Original Author**: `ptica` (version v3.0)
-* **Enhanced Firmware & Features Author**: `ZelTroN2k3` (version v3.8 Alpha)
+## 👥 Auteurs & Crédits
+* **Auteur original** : `ptica` (version v3.0)
+* **Auteur de la version évoluée & améliorations** : `ZelTroN2k3` (version v3.8 Alpha)
 
 ---
 
-## 🌟 Key Features
+## 🌟 Fonctionnalités Principales
 
-### 🌡️ 1. Intelligent Thermal Regulation (Closed Loop)
-* **Precise temperature measurement via NTC 100k B3950** on analog pin `A0` with 8x oversampling and Steinhart-Hart equation.
-* **Fast Preheating (Initial Boost)**: Increased PWM power during temperature rise to overcome the heater block's thermal inertia.
-* **Active Thermal Hold**: Accurate temperature stabilization during the filament fusion/joining phase.
-* **Smart Cooling**: The cooling fan runs during the cooling phase and automatically shuts down as soon as the block cools below **45°C**.
+### 🌡️ 1. Régulation Thermique Intelligente (Boucle Fermée)
+* **Mesure précise par CTN 100k B3950** sur broche analogique `A0` avec sur-échantillonnage 8x et équation de Steinhart-Hart.
+* **Préchauffage rapide (Boost initial)** : Puissance PWM accrue pendant la montée en température pour vaincre l'inertie thermique du bloc.
+* **Maintien thermique actif** : Stabilisation exacte de la température pendant la phase de fusion/pression du filament.
+* **Refroidissement intelligent** : Le ventilateur tourne pendant la phase de refroidissement et s'arrête automatiquement dès que le bloc repasse sous **$45^\circ\text{C}$**.
 
-### 🎨 2. OLED 128x64 Graphical Interface (HUD & Real-Time Animations)
-* **Animated Phase Mini-Icons**:
-  * ⚡ **Heating Boost**: Dynamic animated lightning bolt.
-  * 🔥 **Target Heating**: Pulsing thermometer.
-  * ↔️ **Holding Phase**: Oscillating cursor and guidance arrows for back-and-forth filament sliding.
-  * 🌀 **Cooling**: Rotating 4-blade cooling fan.
-* **Clean Partitioned HUD**: Material name in large font, target setpoint (`280°C`, `230°C`, `190°C`), countdown timer, and calibrated messages ($\le 21$ chars).
-* **Dynamic Progress Bar**: Displays live phase advancement ($25^\circ\text{C} \rightarrow T_{\text{target}}$).
-* **Two-Stage Screen Saver**: "Spark Shower" animation after 1 min of inactivity, followed by full OLED sleep after 2 min to prevent burn-in.
+### 🎨 2. Interface Graphique OLED 128x64 (HUD & Animations)
+* **Mini-icônes animées selon la phase** :
+  * ⚡ **Boost de chauffe** : Éclair animé dynamique.
+  * 🔥 **Chauffe d'approche** : Thermomètre pulsant.
+  * ↔️ **Maintien** : Curseur oscillant et flèches de guidage pour le va-et-vient du filament.
+  * 🌀 **Refroidissement** : Hélice de ventilateur tournante à 4 pales.
+* **Affichage cloisonné moderne** : Nom du matériau en grand format, consigne cible (`280°C`, `230°C`, `190°C`), compte à rebours et messages calibrés ($\le 21$ caractères).
+* **Barre de progression dynamique** : Indique en direct le pourcentage d'avancement de la phase ($25^\circ\text{C} \rightarrow T_{\text{cible}}$).
+* **Économiseur d'écran en 2 étapes** : Animation de « Pluie d'étincelles » après 1 min d'inactivité, puis extinction totale de l'écran OLED après 2 min pour préserver la dalle.
 
-### 🕹️ 3. Ergonomic Single-Button Control
-* **Main Menu**:
-  1. `1. Mode PET` (Target $280^\circ\text{C}$)
-  2. `2. Mode PETG` (Target $230^\circ\text{C}$)
-  3. `3. Mode PLA` (Target $190^\circ\text{C}$)
-  4. `4. Mode Custom` (Customizable target from $150^\circ\text{C}$ to $290^\circ\text{C}$)
-  5. `5. [ SETTINGS ]` (Full configuration submenu)
-* **Forced Cooling Shortcut (30s)**: Triggered with a quick **triple-click** from the main menu to cool down the heater before storage.
+### 🕹️ 3. Navigation Ergonomique à Bouton Unique
+* **Menu Principal** :
+  1. `1. Mode PET` (Cible $280^\circ\text{C}$)
+  2. `2. Mode PETG` (Cible $230^\circ\text{C}$)
+  3. `3. Mode PLA` (Cible $190^\circ\text{C}$)
+  4. `4. Mode Custom` (Cible personnalisable de $150^\circ\text{C}$ à $290^\circ\text{C}$)
+  5. `5. [ REGLAGES ]` (Sous-menu de configuration complète)
+* **Raccourci Refroidissement Forcé (30s)** : Déclenchable par un simple **triple-clic** depuis le menu principal pour refroidir l'appareil avant rangement.
 
-### ⚙️ 4. Settings Submenu & EEPROM Persistence
-* Configure safety timeouts and durations for holding / cooling / fan run time.
-* `Custom Target Temp`: Adjust custom temperature setpoint in steps of $5^\circ\text{C}$.
-* `Total Welds`: Persistent statistic counter of completed welds.
-* `Screen Inversion`: Switch between standard theme (Black Background) and inverted theme (White Background / Black Text).
-* `! Factory Reset`: Instant restore of factory defaults via a double-click.
+### ⚙️ 4. Menu Réglages & Sauvegarde EEPROM
+* Réglage des timeouts de sécurité et durées de maintien / refroidissement / ventilateur.
+* `Temp. Custom` : Réglage de la consigne du mode Custom par pas de $5^\circ\text{C}$.
+* `Total Soudures` : Compteur statistique persistant du nombre total de soudures réussies.
+* `Inversion Ecran` : Bascule entre thème standard (Fond Noir) et thème inversé (Fond Blanc / Texte Noir).
+* `! Reset Usine` : Restauration immédiate des paramètres d'usine en un double-clic.
 
-### 🛡️ 5. Active Thermal Protections
-* **Disconnected / Short-Circuited Sensor Detection**: Instant heater shutdown and `NTC SENSOR ERROR` warning.
-* **Thermal Runaway Protection**: Emergency heater cutoff if $T > 295^\circ\text{C}$ with `OVERHEAT ALERT !` warning.
-* **User Emergency Stop**: Single click during welding instantly aborts heating and starts cooling fan.
+### 🛡️ 5. Sécurités Thermiques Actives
+* **Protection sonde débranchée / court-circuit** : Coupure instantanée du MOSFET et alerte `ERREUR SONDE CTN`.
+* **Protection surchauffe (*Thermal Runaway*)** : Coupure d'urgence immédiate si $T > 295^\circ\text{C}$ avec alerte `ALERTE SURCHAUFFE !`.
+* **Arrêt d'urgence utilisateur** : Un simple clic pendant la soudure interrompt immédiatement la chauffe et ventile le bloc.
 
-### ⚡ 6. Memory Optimized Architecture
-* Display strings and menus stored in Flash (`PROGMEM` / `PSTR`), preserving **over 950 bytes of free SRAM** (only ~53% SRAM used on ATmega328P).
+### ⚡ 6. Empreinte Mémoire Ultra-Optimisée
+* Textes et menus stockés en mémoire Flash (`PROGMEM` / `PSTR`), libérant **plus de 950 octets de RAM libre** (seulement 53% de RAM utilisée sur ATmega328P).
 
 ---
 
-## 📐 Wiring Diagram (Arduino Nano V3)
+## 📐 Schéma de Câblage (Arduino Nano V3)
 
-| Component                 | Component Pin                        | Arduino Nano V3 Pin                | Notes                                                           |
+| Composant                 | Broche du composant                  | Broche Arduino Nano V3             | Notes                                                           |
 | :------------------------ | :----------------------------------- | :--------------------------------- | :-------------------------------------------------------------- |
-| **Push Button**           | Terminal 1 / Terminal 2              | **D10** / **GND**                  | Uses internal `INPUT_PULLUP`                                    |
-| **Heater (MOSFET)**       | Gate (via 100Ω resistor)             | **D3** (PWM)                       | Heater cartridge PWM control                                    |
-| **Cooling Fan 5V/12V**    | Control (Transistor/MOSFET)          | **D2**                             | Forced cooling & cycle completion                               |
-| **Red LED**               | Anode (+ via resistor) / Cathode     | **D8** / **GND**                   | Heating status & alarms                                         |
-| **Green LED**             | Anode (+ via resistor) / Cathode     | **D6** / **GND**                   | System ready & cooling indicator                                |
-| **NTC 100k Sensor**       | Terminal 1 / Terminal 2              | **A0** / **GND**                   | Voltage divider with $47\,\text{k}\Omega$ resistor to **+5V**   |
-| **OLED Display I2C**      | SDA / SCL / VCC / GND                | **A4** / **A5** / **5V** / **GND** | SSD1306, SSD1309 or SH1106 (128x64)                             |
-| **Piezo Buzzer (Opt.)**   | (+) / (-)                            | **D4** / **GND**                   | Enabled via `#define ENABLE_BUZZER 1`                           |
+| **Bouton Poussoir**       | Borne 1 / Borne 2                    | **D10** / **GND**                  | Utilise le `INPUT_PULLUP` interne                               |
+| **Chauffage (MOSFET)**    | Grille (Gate via 100Ω)               | **D3** (PWM)                       | Commande du bloc de chauffe                                     |
+| **Ventilateur 5V/12V**    | Commande (Transistor/MOSFET)         | **D2**                             | Refroidissement forcé et fin de cycle                           |
+| **LED Rouge**             | Anode (+ via résistance) / Cathode   | **D8** / **GND**                   | Témoin de chauffe & alarmes                                     |
+| **LED Verte**             | Anode (+ via résistance) / Cathode   | **D6** / **GND**                   | Témoin système prêt & refroidissement                           |
+| **Sonde CTN 100k**        | Borne 1 / Borne 2                    | **A0** / **GND**                   | Pont diviseur avec résistance $47\,\text{k}\Omega$ vers **+5V** |
+| **Écran OLED I2C**        | SDA / SCL / VCC / GND                | **A4** / **A5** / **5V** / **GND** | SSD1306, SSD1309 ou SH1106 (128x64)                             |
+| **Buzzer Piezo (Option)** | Pôle (+) / Pôle (-)                  | **D4** / **GND**                   | Activable via `#define ENABLE_BUZZER 1`                         |
 
-### NTC 100k Thermistor Circuit (Pin A0)
+### Schéma de branchement de la sonde CTN 100k (A0)
 
 ```
                          +5V (Arduino)
-                            │
-                        [ 47 kΩ ]  (Pull-up Resistor 1/4W)
-                            │
-     Arduino Pin A0 ────────┼──────────────────────┐
-     (Analog Input)         │                      │
-                       [ NTC 100k ]           [ 100 nF ] (Optional filter cap)
-                            │                      │
-                           GND ────────────────────┘
+                           │
+                       [ 47 kΩ ]  (Résistance Pull-up 1/4W)
+                           │
+    Broche A0 Arduino ─────┼──────────────────────┐
+    (Entrée mesure)        │                      │
+                      [ CTN 100k ]           [ 100 nF ] (Optionnel, filtrage)
+                           │                      │
+                          GND ────────────────────┘
 ```
 
 ---
 
-## 🕹️ Single-Button Operating Guide
+## 🕹️ Guide d'Utilisation du Bouton Unique
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                        SINGLE BUTTON                        │
+│                       BOUTON UNIQUE                         │
 ├──────────────────────────────┬──────────────────────────────┤
-│ IN MAIN MENU                 │ IN SETTINGS SUBMENU          │
-│ • 1 Click  : Move cursor     │ • 1 Click  : Move cursor     │
-│ • 2 Clicks : Start weld      │ • 2 Clicks : Edit parameter  │
-│ • 3 Clicks : Forced Cooling  │                              │
+│ DANS LE MENU PRINCIPAL       │ DANS LE MENU RÉGLAGES        │
+│ • 1 Clic   : Déplacer curseur│ • 1 Clic   : Déplacer curseur│
+│ • 2 Clics  : Lancer soudure  │ • 2 Clics  : Éditer paramètre│
+│ • 3 Clics  : Ventilo Forcé   │                              │
 ├──────────────────────────────┴──────────────────────────────┤
-│ DURING WELDING OR ACTIVE ALARM                              │
-│ • 1 Click  : Emergency Stop / Dismiss Alarm                 │
+│ EN COURS DE SOUDURE OU ALARME                               │
+│ • 1 Clic   : Arrêt d'urgence / Acquittement de l'alarme     │
 └─────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
-## 📺 Graphical OLED Screens Overview
+## 📺 Aperçu des Écrans Graphiques
 
-### 1. Welcome HUD Screen
+### 1. Écran d'Accueil (HUD Technologique)
 ```
 ┌──                                                    ──┐
 │                                                        │
-│                        WELDER                          │
+│                       SOUDEUSE                         │
 │                  ptica & ZelTroN2k3                    │
 │                      v3.8 Alpha                        │
 │                                                        │
 └──                                                    ──┘
 ```
 
-### 2. Main Menu (Material & Temperature Selection)
+### 2. Menu Principal (Sélection du Matériau & Température)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ --- PWM WELDER ---                                     │
+│ --- SOUDEUSE PWM ---                                   │
 │ > 1. Mode PET                                     280C │
 │   2. Mode PETG                                    230C │
 │   3. Mode PLA                                     190C │
 │   4. Mode Custom                                  200C │
-│   5. [ SETTINGS ]                                      │
+│   5. [ REGLAGES ]                                      │
 └────────────────────────────────────────────────────────┘
 ```
 
-### 3. Settings Menu (EEPROM Configuration)
+### 3. Menu Réglages (Configuration EEPROM)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ ----* SETTINGS *----                                   │
-│ > Heat PET                                         35  │
-│   Heat PETG                                        25  │
-│   Heat PLA                                         25  │
-│   Target Temp Cust                                200C │
-│   < Save & Exit                                        │
+│ ----* REGLAGES *----                                   │
+│ > Chauffe PET                                      35  │
+│   Chauffe PETG                                     25  │
+│   Chauffe PLA                                      25  │
+│   Temp. Custom                                    200C │
+│   < Sauver & Retour                                    │
 └────────────────────────────────────────────────────────┘
 ```
 
-### 4. Welding Screen (Heating & Real-Time Temperature)
+### 4. Écran de Soudure (Chauffe & Régulation en direct)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ Mode 1         │       [ 🔥 ]       │              25s │  <-- Countdown timer
+│ Mode 1         │       [ 🔥 ]       │              25s │  <-- Compte à rebours
 ├────────────────────────────────────────────────────────┤
 │                                                        │
-│  PET                                             280°C │  <-- Material & Target Temperature
+│  PET                                             280°C │  <-- Matériau & Température Cible
 │                                                        │
 ├────────────────────────────────────────────────────────┤
-│ Heating : 195°C                                        │  <-- Real-time measured temperature
-│ [████████████████████░░░░░░░░░░]                       │  <-- Dynamic progress (25°C -> 280°C)
+│ Chauffe : 195°C                                        │  <-- Température mesurée en temps réel
+│ [████████████████████░░░░░░░░░░]                       │  <-- Progression (25°C -> 280°C)
 └────────────────────────────────────────────────────────┘
 ```
 
-### 5. Forced Cooling Screen (30s - Triple-Click Shortcut)
+### 5. Écran de Ventilation Forcée (30s - Raccourci Triple-Clic)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ COOLING (30s)                                      28s │  <-- Countdown timer (30s -> 0s)
+│ VENTILATION (30s)                                  28s │  <-- Compte à rebours (30s -> 0s)
 │                                                        │
-│                        ( 🌀 )                          │  <-- Large animated fan
+│                        ( 🌀 )                          │  <-- Grande hélice animée
 │                                                        │
-│ Click to stop                                          │
-│ [████████████░░░░░░░░░░░░░░░░░░]                       │  <-- Cooling progression
+│ Clic pour arreter                                      │
+│ [████████████░░░░░░░░░░░░░░░░░░]                       │  <-- Progression du refroidissement
 └────────────────────────────────────────────────────────┘
 ```
 
-### 6. Welding Finished Screen (Statistic Counter)
+### 6. Écran de Fin de Soudure (Compteur Statistique)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ Weld OK !                                              │
+│ Soudure OK !                                           │
 │                                                        │
-│ Welding complete.                                      │
-│ Total: 48 welds                                        │
+│ Soudure terminee.                                      │
+│ Total: 48 soudures                                     │
 │                                                        │
 └────────────────────────────────────────────────────────┘
 ```
 
-### 7. Thermal Safety Alert Screen (Emergency Cutoff)
+### 7. Écran d'Alerte Sécurité Thermique (Coupure d'Urgence)
 ```
 ┌────────────────────────────────────────────────────────┐
-│ OVERHEAT ALERT                                         │
+│ ALERTE SURCHAUFFE                                      │
 │                                                        │
 │ Temperature > 295C                                     │
-│ Click to dismiss                                       │
+│ Clic pour acquitter                                    │
 │                                                        │
 └────────────────────────────────────────────────────────┘
 ```
 
-### 8. Screen Saver (Animated Spark Shower at 1 min)
+### 8. Écran de Veille (Pluie d'étincelles animée à 1 min)
 ```
 ┌────────────────────────────────────────────────────────┐
 │                      .       *        .                │
-│                     PWM WELDER                         │
-│                     [ Sleep ]                          │
+│                   SOUDEUSE PWM                         │
+│                     [ Veille ]                         │
 │           *                     .            *         │
 │                   .             *                      │
 └────────────────────────────────────────────────────────┘
@@ -205,43 +209,43 @@
 
 ---
 
-## 📂 Project Architecture & Multi-Language Versions
+## 📂 Architecture des Dossiers & Versions Multi-Langues
 
-This project is fully maintained across **3 synchronized language versions**:
+Le projet est disponible en **3 langues complètes et synchronisées** :
 
 ```
 WelderPWM_new_3+Screen/
-├── README.md                          # Main project overview
-├── WelderPWM_new_3_Screen_FR/         # 🇫🇷 French Version (French UI & Logs)
-│   ├── README.md                      # French documentation
+├── README.md                          # Documentation officielle du projet
+├── WelderPWM_new_3_Screen_FR/         # 🇫🇷 Version Française (Interface & Logs en Français)
+│   ├── README.md                      # Documentation en français
 │   ├── WelderPWM_new_3_Screen_FR.ino
 │   └── Config.h, Globals.h/.cpp, Hardware.h/.cpp, Display.h/.cpp, MenuLogic.h/.cpp, ScreenSaver.h/.cpp
 ├── WelderPWM_new_3_Screen_EN/         # 🇬🇧 English Version (Full English UI & Logs)
 │   ├── README.md                      # English documentation
 │   ├── WelderPWM_new_3_Screen_EN.ino
 │   └── Config.h, Globals.h/.cpp, Hardware.h/.cpp, Display.h/.cpp, MenuLogic.h/.cpp, ScreenSaver.h/.cpp
-└── WelderPWM_new_3_Screen_RU/         # 🇷🇺 Russian Version (Russian UI & Menus)
-    ├── README.md                      # Russian documentation
+└── WelderPWM_new_3_Screen_RU/         # 🇷🇺 Русская Версия (Интерфейс и меню на русском языке)
+    ├── README.md                      # Русскоязычная документация
     ├── WelderPWM_new_3_Screen_RU.ino
     └── Config.h, Globals.h/.cpp, Hardware.h/.cpp, Display.h/.cpp, MenuLogic.h/.cpp, ScreenSaver.h/.cpp
 ```
 
 ---
 
-## 🛠️ Installation & Flashing
+## 🛠️ Installation & Téléversement
 
-### 1. Prerequisites (Arduino Libraries)
-Install the following libraries via the Arduino IDE Library Manager:
-* **`U8glib`** (by *oliver*): Fast I2C OLED display driver.
-* **`EncButton`** (by *AlexGyver*): Single button handler (click, double-click, triple-click).
-* **`Wire`** and **`EEPROM`**: Built-in with Arduino AVR core.
+### 1. Prérequis (Bibliothèques Arduino)
+Installez les bibliothèques suivantes via le Gestionnaire de bibliothèques Arduino IDE :
+* **`U8glib`** (par *oliver*) : Pilote d'affichage OLED I2C rapide.
+* **`EncButton`** (par *AlexGyver*) : Gestion avancée du bouton unique (clic, double-clic, triple-clic).
+* **`Wire`** et **`EEPROM`** : Incluses de base dans le noyau Arduino AVR.
 
-### 2. Arduino IDE Configuration
-* **Board**: `Arduino Nano`
-* **Processor**: `ATmega328P` (or `ATmega328P (Old Bootloader)` depending on your Nano board)
-* **Port**: Select the appropriate COM port.
+### 2. Configuration Arduino IDE
+* **Type de carte** : `Arduino Nano`
+* **Processeur** : `ATmega328P` (ou `ATmega328P (Old Bootloader)` selon votre clone Nano)
+* **Port** : Sélectionnez le port COM correspondant.
 
-### 3. Command Line Compilation (Optional with `arduino-cli`)
+### 3. Compilation avec `arduino-cli` (Optionnel)
 ```bash
 arduino-cli compile --fqbn arduino:avr:nano:cpu=atmega328old .
 arduino-cli upload -p COM3 --fqbn arduino:avr:nano:cpu=atmega328old .
@@ -249,5 +253,5 @@ arduino-cli upload -p COM3 --fqbn arduino:avr:nano:cpu=atmega328old .
 
 ---
 
-## 📄 License
-Open-source project distributed under the MIT / Open Source license. Free for personal use, modifications, and continuous improvement by the 3D printing community.
+## 📄 Licence
+Projet open-source distribué sous licence MIT / Open Source. Libre pour utilisation personnelle, modifications et amélioration continue par la communauté d'impression 3D.
